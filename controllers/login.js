@@ -23,6 +23,7 @@ module.exports.register = (req, res) => {
     let users = Users();
     let token = generateToken(userDetails.profile.U3);
     users.token = token;
+    user.id = userDetails.profile.Eea;
     users.email = userDetails.profile.U3;
     users.name = userDetails.profile.ig;
     users.picture = users.Paa;

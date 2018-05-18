@@ -1,8 +1,7 @@
 const express = require('express');
-const Users = require('./user_model');
+const Users = require('./../models/login');
 const jwt = require('jsonwebtoken');
-const constantObj = require('./../constants');
-const config = require('../../config/config');
+const config = require('./../config/config.json');
 const moment = require('moment');
 
 
@@ -15,26 +14,6 @@ function generateToken(email) {
     exp: moment().add(7, 'days').unix()
     };
     return jwt.sign(payload, token);
-}
-
-module.exports.login = (req, res) => {
-    let user = req.body.user;
-    let users = Users();
-    let outputJSON = {};
-    Users.findOne({
-        email: user.email
-    }, (err, resp) => {
-        if (resp) {
-            users.validatePassword(user.password, (response) => {
-                console.log('res', response);
-                outputJSON = {
-                    status: '200'
-                }
-                res.status(200).send(outputJSON);
-            })
-        }
-    })
-    
 }
 
 module.exports.register = (req, res) => {

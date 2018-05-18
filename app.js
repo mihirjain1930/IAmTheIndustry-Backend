@@ -7,8 +7,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
 var db = require('./config/db');
-const index = require('./routes/index');
-const userRoutes = require('./app_modules/login/routes');
+const userRoutes = require('./routes/login');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -60,10 +59,6 @@ var allowCrossDomain = function(req, res, next) {
   }
 };
 app.use(allowCrossDomain);
-
-// app.use('/', index);
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

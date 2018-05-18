@@ -9,6 +9,11 @@ const Users = mongoose.Schema({
         required: false,
         default:""
     },
+    social_id: {
+        type: String,
+        required: false,
+        default: ""
+    },
     email: {
         type: String,
         required: false,

@@ -33,8 +33,7 @@ module.exports.register = (req, res) => {
             email: userDetails.profile.U3
         }, (err, resp) => {
             if (resp) {
-
-                Users.update({
+                Users.findOneAndUpdate({
                     email: userDetails.profile.U3
                 }, {
                     $set: {
@@ -43,7 +42,7 @@ module.exports.register = (req, res) => {
                 }, (err, response) => {
                     outputJSON = {
                         status: 200,
-                        data: resp
+                        data: response
                     }
                     res.status(200).send(outputJSON)
                 });
@@ -64,9 +63,9 @@ module.exports.register = (req, res) => {
 }
 
 module.exports.findUser = (req, res) => {
-    let token = req.params.id;
+    let id = req.params.id;
     Users.findOne({
-        token: token
+        social_id: id
     }, (err, resp) => {
         if (resp) {
             outputJSON = {

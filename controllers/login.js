@@ -29,14 +29,6 @@ module.exports.register = (req, res) => {
     }    
 
     let users = Users();
-<<<<<<< HEAD
-    let token = generateToken(userDetails.profile.U3);
-    users.token = token;
-    users.social_id = userDetails.profile.Eea;
-    users.email = userDetails.profile.U3;
-    users.name = userDetails.profile.ig;
-    users.picture = userDetails.profile.Paa;
-=======
     if(userDetails != null || userDetails != undefined){
         let token = generateToken(userDetails.profile.U3);
         users.token = token;
@@ -55,7 +47,6 @@ module.exports.register = (req, res) => {
     }    
     
     // users.picture = users.Paa;
->>>>>>> c7be4d7982779f045bd71807b531b007b8c65aee
     users.type = loginType;
     Users.findOne({
         "email": users.email,

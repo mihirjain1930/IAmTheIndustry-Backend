@@ -26,7 +26,7 @@ module.exports.register = (req, res) => {
     users.social_id = userDetails.profile.Eea;
     users.email = userDetails.profile.U3;
     users.name = userDetails.profile.ig;
-    users.picture = users.Paa;
+    users.picture = userDetails.profile.Paa;
     users.type = loginType;
     if (loginType == '3' || loginType == '2') {
         Users.findOne({
@@ -65,7 +65,8 @@ module.exports.register = (req, res) => {
 module.exports.findUser = (req, res) => {
     let id = req.params.id;
     Users.findOne({
-        social_id: id
+        _id: id,
+        is_deleted: false
     }, (err, resp) => {
         if (resp) {
             outputJSON = {

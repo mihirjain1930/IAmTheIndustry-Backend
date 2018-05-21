@@ -145,5 +145,50 @@ module.exports.login = function(req, res) {
 };
 
 
+module.exports.findUser = (req, res) => {
+    let id = req.params.id;
+    Users.findOne({
+        social_id: id
+    }, (err, resp) => {
+        if (resp) {
+            outputJSON = {
+                status: 200,
+                data: resp
+            }
+            res.status(200).send(outputJSON)
+        }
+        else {
+            outputJSON = {
+                status: 201,
+                msg: 'User not found'
+            }
+            res.status(201).send(outputJSON)
+        }
+    })
+}
 
-
+module.exports.logout = (req, res) => {
+    let email = req.params.email;
+    Users.update({
+        "email": email
+    }, {
+        $set: {
+            "token": ""
+        }
+    }, (err, resp) => {
+        if (resp) {
+            outputJSON = {
+                status: 200,
+                data: resp
+            }
+            res.status(200).send(outputJSON)
+        }
+        else {
+            outputJSON = {
+                status: 201,
+                msg: 'Can not logout'
+            }
+            res.status(201).send(outputJSON)
+        }
+    })
+}

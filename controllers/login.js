@@ -33,11 +33,20 @@ module.exports.register = (req, res) => {
             email: userDetails.profile.U3
         }, (err, resp) => {
             if (resp) {
-                outputJSON = {
-                    status: 200,
-                    data: resp
-                }
-                res.status(200).send(outputJSON)
+
+                Users.update({
+                    email: userDetails.profile.U3
+                }, {
+                    $set: {
+                        token: token
+                    }
+                }, (err, response) => {
+                    outputJSON = {
+                        status: 200,
+                        data: resp
+                    }
+                    res.status(200).send(outputJSON)
+                });
             }
             else {
                 users.save((err, response) => {
@@ -52,4 +61,52 @@ module.exports.register = (req, res) => {
             }
         })
     }
+}
+
+module.exports.findUser = (req, res) => {
+    let token = req.params.id;
+    Users.findOne({
+        token: token
+    }, (err, resp) => {
+        if (resp) {
+            outputJSON = {
+                status: 200,
+                data: resp
+            }
+            res.status(200).send(outputJSON)
+        }
+        else {
+            outputJSON = {
+                status: 201,
+                msg: 'User not found'
+            }
+            res.status(201).send(outputJSON)
+        }
+    })
+}
+
+module.exports.logout = (req, res) => {
+    let email = req.params.email;
+    Users.update({
+        "email": email
+    }, {
+        $set: {
+            "token": ""
+        }
+    }, (err, resp) => {
+        if (resp) {
+            outputJSON = {
+                status: 200,
+                data: resp
+            }
+            res.status(200).send(outputJSON)
+        }
+        else {
+            outputJSON = {
+                status: 201,
+                msg: 'Can not logout'
+            }
+            res.status(201).send(outputJSON)
+        }
+    })
 }

@@ -6,6 +6,7 @@ let cors = require('cors')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+var passport = require('passport');
 var db = require('./config/db');
 const userRoutes = require('./routes/login');
 
@@ -27,6 +28,18 @@ app.use(require('serve-static')(__dirname + '/../../public'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport')(passport);
 
 app.use('/user', userRoutes);
 

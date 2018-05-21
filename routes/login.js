@@ -5,7 +5,9 @@ var userAuth = require('./../controllers/login');
 userRoutes.post('/usersignup', (req, res) => {
     userAuth.register(req, res);
 })
-
+userRoutes.post('/userlogin', function(req, res) {
+    userAuth.login(req, res);
+})
 userRoutes.get('/userdetails/:id', (req, res) =>{
     userAuth.findUser(req, res);
 })

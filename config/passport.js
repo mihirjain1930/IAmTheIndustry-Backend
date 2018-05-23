@@ -5,7 +5,6 @@ let LocalStrategy = require('passport-local').Strategy;
 var jwt = require('jsonwebtoken');
 
 module.exports = function(passport) {
-    console.log("============")
     passport.use(new LocalStrategy({
             usernameField: 'email',
             passwordField: 'password',

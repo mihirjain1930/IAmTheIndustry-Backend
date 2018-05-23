@@ -46,7 +46,7 @@ module.exports.register = (req, res) => {
          users.setPassword(req.body.password);
     }    
     
-    // users.picture = users.Paa;
+    users.picture = userDetails.profile.Paa;
     users.type = loginType;
     Users.findOne({
         "email": users.email,
@@ -57,6 +57,7 @@ module.exports.register = (req, res) => {
                 outputJSON = {
                     'status': 400,
                     'msg': "User already registered with social account",
+                    'data': eRes
                 };
                 res.status(200).send(outputJSON);
             } else {
@@ -148,7 +149,8 @@ module.exports.login = function(req, res) {
 module.exports.findUser = (req, res) => {
     let id = req.params.id;
     Users.findOne({
-        social_id: id
+        _id: id,
+        is_deleted: false
     }, (err, resp) => {
         if (resp) {
             outputJSON = {

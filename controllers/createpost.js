@@ -10,16 +10,16 @@ var async = require('async');
 
 
 
-exports.create = function(req, res) {
+exports.create = function (req, res) {
     var errorMessage = "";
     var outputJSON = "";
     //req.body.image = "";
     var postModelObj = req.body;
     let _this = this,
         directory = "./public/media/industryAudio/";
-    fs.exists(directory, function(exists) {
+    fs.exists(directory, function (exists) {
         if (!exists) {
-            fs.mkdir(directory, function(err) {
+            fs.mkdir(directory, function (err) {
                 if (err) {
                     _this.res.send(500, err);
                 } else {
@@ -30,60 +30,10 @@ exports.create = function(req, res) {
             savemusicAudio(req, res);
         }
     });
-    // postObj(postModelObj).save(req.body, function(err, data) {
-    //     if (err) {
-    //         switch (err.title) {
-    //             case 'ValidationError':
-    //                 for (field in err.errors) {
-    //                     if (errorMessage == "") {
-    //                         errorMessage = err.errors[field].message;
-    //                     } else {
-    //                         errorMessage += ", " + err.errors[field].message;
-    //                     }
-    //                 } //for
-    //                 break;
-    //         } //switch
-    //         outputJSON = {
-    //             'status': 'failure',
-    //             'messageId': 401,
-    //             'message': errorMessage
-    //         };
-    //         res.jsonp(outputJSON);
-    //     } //if
-    //     else {
-    //         if (req.body.imageObj != undefined) {
 
-    //             let reqdata = {};
-    //             reqdata._id = data._id;
-    //             reqdata.image = req.body.imageObj;
-    //             reqdata.field = 'icon';
-    //             reqdata.folder = '';
-    //             uploadCatImg(reqdata, function(responce) {
-    //                 outputJSON = {
-    //                     'status': 'success',
-    //                     'messageId': 200,
-    //                     'message': constantObj.messages.categorySuccess,
-    //                     'data': data
-    //                 };
-    //                 res.jsonp(outputJSON);
-    //             });
-    //         } else {
-    //             outputJSON = {
-    //                 'status': 'success',
-    //                 'messageId': 200,
-    //                 'message': constantObj.messages.categorySuccess,
-    //                 'data': data
-    //             };
-    //             res.jsonp(outputJSON);
-
-    //         }
-
-    //     }
-
-    // });
 }
 
-var uploadCatImg = function(data, callback) {
+var uploadCatImg = function (data, callback) {
 
 
     if (data.image.indexOf("base64,") != -1) {
@@ -109,15 +59,13 @@ var uploadCatImg = function(data, callback) {
 
 
 
-var savemusicAudio = function(req, res) {
+var savemusicAudio = function (req, res) {
     let _this = this;
     let form = new formidable.IncomingForm();
     form.keepExtensions = true; //keep file extension
     form.uploadDir = process.env.PWD + '/public/media/industryAudio';
     form.multiples = true;
-    form.parse(req, function(err, fields, files) {
-        //console.log("fields", fields);
-        //console.log("fields", fields);
+    form.parse(req, function (err, fields, files) {
         var arrfile = [];
         if (!Array.isArray(files.file)) {
             arrfile.push(files.file);
@@ -129,12 +77,10 @@ var savemusicAudio = function(req, res) {
         var length = arrfile.length;
         async.map(files, (resp, icb) => {
             var myfile = resp.path.split('/');
-            console.log(">>>>>222222222222", myfile[myfile.length - 1])
             var fileType = resp.type;
             fileType = fileType.split('/');
-            console.log("fileType222222222222222", fileType, resp.type)
             var fileName = resp.name;
-             var baseImageUrl = path.join(__dirname + '/../public/media/industryAudio/', fileName);
+            var baseImageUrl = path.join(__dirname + '/../public/media/industryAudio/', fileName);
             if (fileType[0] == 'audio') {
                 fields.music_audio = myfile[myfile.length - 1];
             } else if (fileType[0] == 'image') {
@@ -148,19 +94,15 @@ var savemusicAudio = function(req, res) {
             }
 
         })
-        console.log("fields111111111",fields)
-        
-        postSchema(fields).save(fields, function(saveErr, savedata) {
-             console.log("saveErr, savedata", saveErr, savedata);
+        postSchema(fields).save(fields, function (saveErr, savedata) {
+            console.log("saveErr, savedata", saveErr, savedata);
             if (saveErr) {
-                console.log("0000000000000000000")
                 outputJson = {
                     status: 400,
                     message: saveErr,
                 }
                 return res.json(outputJson);
             } else {
-                console.log("222222222222")
                 outputJson = {
                     status: 200,
                     data: savedata,
@@ -168,8 +110,6 @@ var savemusicAudio = function(req, res) {
                 return res.json(outputJson);
             }
         })
-
-
     })
 
 }

@@ -1,5 +1,6 @@
 const express = require('express');
 const postSchema = require('./../models/createpost');
+const GenreSchema = require('./../models/genre');
 const config = require('./../config/config.json');
 const moment = require('moment');
 var passport = require('passport');
@@ -30,7 +31,6 @@ exports.create = function (req, res) {
             savemusicAudio(req, res);
         }
     });
-
 }
 
 var uploadCatImg = function (data, callback) {
@@ -111,5 +111,12 @@ var savemusicAudio = function (req, res) {
             }
         })
     })
-
+}
+exports.genreList = function (req, res) {
+    GenreSchema.find({ is_deleted: false, is_active: true }, { is_deleted: 0, is_active: 0, created_date: 0, modified_date: 0 }, function (err, data) {
+        res.status(200).send({
+            msg: "Data retrieved successfully",
+            data: data
+        })
+    })
 }
